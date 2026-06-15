@@ -1,0 +1,8 @@
+/* Export only JNI entry points; hide C ABI + core + tvision internals (§12.3). */
+{
+    global:
+        Java_*;
+        JNI_OnLoad;
+    local:
+        *;
+};
