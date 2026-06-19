@@ -8,10 +8,21 @@ public final class Application implements AutoCloseable {
 
     private Application(long ptr) { this.ptr = ptr; }
 
+    /** Validate a native app handle; surface the C-ABI error message (e.g. the
+     *  terminfo guard, §15.2) instead of a null handle that crashes later. */
+    private static long checked(long ptr) {
+        if (ptr == 0) {
+            String msg = Native.statusMessage();
+            throw new IllegalStateException(
+                (msg == null || msg.isEmpty()) ? "termacs: failed to create native application" : msg);
+        }
+        return ptr;
+    }
+
     /** Real terminal (tvision backend). */
-    public Application() { this(Native.appNewTerminal()); }
+    public Application() { this(checked(Native.appNewTerminal())); }
     /** In-memory backend for headless tests / snapshots (§11.10). */
-    public static Application headless(int w, int h) { return new Application(Native.appNewHeadless(w, h)); }
+    public static Application headless(int w, int h) { return new Application(checked(Native.appNewHeadless(w, h))); }
 
     long ptr() { return ptr; }
 
