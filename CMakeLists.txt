@@ -15,14 +15,18 @@ set(TERMACS_CORE_DIR "" CACHE PATH
 if(NOT TERMACS_CORE_DIR AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../termacs-core/CMakeLists.txt")
     set(TERMACS_CORE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../termacs-core")  # auto: monorepo sibling
 endif()
+# Remote source (used when no local override): pinned tag, overridable URL/tag
+# so CI or a mirror can redirect without editing this file.
+set(TERMACS_CORE_GIT "https://github.com/nidwe72/termacs-core.git" CACHE STRING "termacs-core git URL")
+set(TERMACS_CORE_TAG "v0.1.0" CACHE STRING "termacs-core git tag")
 if(TERMACS_CORE_DIR)
     message(STATUS "termacs-java: building against local termacs-core at ${TERMACS_CORE_DIR}")
     FetchContent_Declare(termacs_core SOURCE_DIR "${TERMACS_CORE_DIR}")
 else()
-    message(STATUS "termacs-java: fetching termacs-core from GitHub (pinned tag)")
+    message(STATUS "termacs-java: fetching termacs-core ${TERMACS_CORE_TAG} from ${TERMACS_CORE_GIT}")
     FetchContent_Declare(termacs_core
-        GIT_REPOSITORY https://github.com/nidwe72/termacs-core.git
-        GIT_TAG main)  # R4 pins this to a version tag, e.g. v0.1.0
+        GIT_REPOSITORY "${TERMACS_CORE_GIT}"
+        GIT_TAG "${TERMACS_CORE_TAG}")
 endif()
 FetchContent_MakeAvailable(termacs_core)
 
