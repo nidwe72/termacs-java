@@ -16,7 +16,7 @@ final class Native {
         if (explicit != null) System.load(explicit);
         else System.loadLibrary("termacsjni");
         int v = abiVersion();
-        if (v != 2) throw new IllegalStateException("termacs ABI mismatch: native=" + v + " expected=2");
+        if (v != 3) throw new IllegalStateException("termacs ABI mismatch: native=" + v + " expected=3");
     }
 
     // ABI
@@ -134,4 +134,18 @@ final class Native {
     static native void frameSetTitle(long app, long w, String title);
     static native long addScrollView(long app, long c);
     static native void scrollViewScrollTo(long app, long w, int x, int y);
+
+    // text-editing surface (§5.11)
+    static native void   lineEditSelectAll(long app, long w);
+    static native String lineEditSelectedText(long app, long w);
+    static native void   lineEditCopy(long app, long w);
+    static native void   lineEditCut(long app, long w);
+    static native void   lineEditPaste(long app, long w);
+    static native void   onLineEditSelectionChanged(long app, long w, Cb fn);
+    static native void   textAreaSelectAll(long app, long w);
+    static native String textAreaSelectedText(long app, long w);
+    static native void   textAreaCopy(long app, long w);
+    static native void   textAreaCut(long app, long w);
+    static native void   textAreaPaste(long app, long w);
+    static native void   onTextAreaSelectionChanged(long app, long w, Cb fn);
 }

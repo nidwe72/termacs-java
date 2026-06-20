@@ -12,4 +12,11 @@ public final class TextArea extends Widget {
     public void   setWordWrap(boolean w)   { Native.textAreaSetWordWrap(app, h, w); }
     public void   setPlaceholder(String p) { Native.textAreaSetPlaceholder(app, h, p); }
     public void   onTextChanged(Consumer<String> c) { Native.onTextAreaChanged(app, h, (i, t) -> c.accept(t)); }
+    // §5.11 editing surface
+    public void   selectAll()       { Native.textAreaSelectAll(app, h); }
+    public String selectedText()    { return Native.textAreaSelectedText(app, h); }
+    public void   copy()            { Native.textAreaCopy(app, h); }
+    public void   cut()             { Native.textAreaCut(app, h); }
+    public void   paste()           { Native.textAreaPaste(app, h); }
+    public void   onSelectionChanged(Runnable r) { Native.onTextAreaSelectionChanged(app, h, (i, t) -> r.run()); }
 }

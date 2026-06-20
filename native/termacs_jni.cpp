@@ -153,4 +153,18 @@ JFN(void, frameSetTitle)(JNIEnv* e, jclass, jlong app, jlong w, jstring t)  { au
 JFN(jlong, addScrollView)(JNIEnv*, jclass, jlong app, jlong w)              { return (jlong)tm_add_scrollview(APP, W); }
 JFN(void, scrollViewScrollTo)(JNIEnv*, jclass, jlong app, jlong w, jint x, jint y) { tm_scrollview_scroll_to(APP, W, x, y); }
 
+// ----- text-editing surface (§5.11) -----
+JFN(void, lineEditSelectAll)(JNIEnv*, jclass, jlong app, jlong w)           { tm_lineedit_select_all(APP, W); }
+JFN(jstring, lineEditSelectedText)(JNIEnv* e, jclass, jlong app, jlong w)   { char b[8192]; tm_lineedit_selected_text(APP, W, b, sizeof b); return e->NewStringUTF(b); }
+JFN(void, lineEditCopy)(JNIEnv*, jclass, jlong app, jlong w)                { tm_lineedit_copy(APP, W); }
+JFN(void, lineEditCut)(JNIEnv*, jclass, jlong app, jlong w)                 { tm_lineedit_cut(APP, W); }
+JFN(void, lineEditPaste)(JNIEnv*, jclass, jlong app, jlong w)               { tm_lineedit_paste(APP, W); }
+JFN(void, onLineEditSelectionChanged)(JNIEnv* e, jclass, jlong app, jlong w, jobject cb) { tm_on_lineedit_selection_changed(APP, W, slotTramp, mkRef(e, cb)); }
+JFN(void, textAreaSelectAll)(JNIEnv*, jclass, jlong app, jlong w)           { tm_textarea_select_all(APP, W); }
+JFN(jstring, textAreaSelectedText)(JNIEnv* e, jclass, jlong app, jlong w)   { char b[8192]; tm_textarea_selected_text(APP, W, b, sizeof b); return e->NewStringUTF(b); }
+JFN(void, textAreaCopy)(JNIEnv*, jclass, jlong app, jlong w)                { tm_textarea_copy(APP, W); }
+JFN(void, textAreaCut)(JNIEnv*, jclass, jlong app, jlong w)                 { tm_textarea_cut(APP, W); }
+JFN(void, textAreaPaste)(JNIEnv*, jclass, jlong app, jlong w)               { tm_textarea_paste(APP, W); }
+JFN(void, onTextAreaSelectionChanged)(JNIEnv* e, jclass, jlong app, jlong w, jobject cb) { tm_on_textarea_selection_changed(APP, W, slotTramp, mkRef(e, cb)); }
+
 } // extern "C"
