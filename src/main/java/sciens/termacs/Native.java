@@ -16,7 +16,7 @@ final class Native {
         if (explicit != null) System.load(explicit);
         else System.loadLibrary("termacsjni");
         int v = abiVersion();
-        if (v != 1) throw new IllegalStateException("termacs ABI mismatch: native=" + v + " expected=1");
+        if (v != 2) throw new IllegalStateException("termacs ABI mismatch: native=" + v + " expected=2");
     }
 
     // ABI
@@ -90,4 +90,48 @@ final class Native {
     // dialogs
     static native void dialogInfo(long app, long win, String message);
     static native void dialogConfirm(long app, long win, String message, Cb fn);
+
+    // P5 selection & input widgets (§5.10)
+    static native void buttonSetVariant(long app, long w, int variant);
+    static native void buttonSetDefault(long app, long w, boolean isDefault);
+
+    static native long addCheckBox(long app, long c, String text);
+    static native void checkBoxSetChecked(long app, long w, boolean checked);
+    static native boolean checkBoxIsChecked(long app, long w);
+    static native void onToggled(long app, long w, Cb fn);
+
+    static native long addOptionGroup(long app, long c, int mode);
+    static native void optionGroupSetOptions(long app, long w, String nlJoined);
+    static native void optionGroupSetOrientation(long app, long w, int axis);
+    static native void optionGroupSetSelectedIndex(long app, long w, int i);
+    static native int  optionGroupSelectedIndex(long app, long w);
+    static native void optionGroupSetSelected(long app, long w, int i, boolean on);
+    static native boolean optionGroupIsSelected(long app, long w, int i);
+    static native void onOptionChanged(long app, long w, Cb fn);
+
+    static native long addComboBox(long app, long c);
+    static native void comboBoxSetOptions(long app, long w, String nlJoined);
+    static native void comboBoxSetSelectedIndex(long app, long w, int i);
+    static native int  comboBoxSelectedIndex(long app, long w);
+    static native String comboBoxSelectedText(long app, long w);
+    static native void comboBoxSetPlaceholder(long app, long w, String text);
+    static native void onComboChanged(long app, long w, Cb fn);
+
+    static native long addProgressBar(long app, long c);
+    static native void progressBarSetValue(long app, long w, int percent);
+    static native int  progressBarValue(long app, long w);
+
+    static native long addTextArea(long app, long c);
+    static native void textAreaSetText(long app, long w, String t);
+    static native String textAreaText(long app, long w);
+    static native void textAreaAppendLine(long app, long w, String t);
+    static native void textAreaSetReadOnly(long app, long w, boolean ro);
+    static native void textAreaSetWordWrap(long app, long w, boolean wrap);
+    static native void textAreaSetPlaceholder(long app, long w, String t);
+    static native void onTextAreaChanged(long app, long w, Cb fn);
+
+    static native long addFrame(long app, long c, String title);
+    static native void frameSetTitle(long app, long w, String title);
+    static native long addScrollView(long app, long c);
+    static native void scrollViewScrollTo(long app, long w, int x, int y);
 }

@@ -109,4 +109,48 @@ JFN(void, onActivated)(JNIEnv* e, jclass, jlong app, jlong w, jobject cb)   { tm
 JFN(void, dialogInfo)(JNIEnv* e, jclass, jlong app, jlong w, jstring m)              { auto s = S(e, m); tm_dialog_info(APP, W, s.c_str()); }
 JFN(void, dialogConfirm)(JNIEnv* e, jclass, jlong app, jlong w, jstring m, jobject cb) { auto s = S(e, m); tm_dialog_confirm(APP, W, s.c_str(), slotTramp, mkRef(e, cb)); }
 
+// ----- P5 selection & input widgets (§5.10) -----
+JFN(void, buttonSetVariant)(JNIEnv*, jclass, jlong app, jlong w, jint v)     { tm_button_set_variant(APP, W, v); }
+JFN(void, buttonSetDefault)(JNIEnv*, jclass, jlong app, jlong w, jboolean d) { tm_button_set_default(APP, W, d ? 1 : 0); }
+
+JFN(jlong, addCheckBox)(JNIEnv* e, jclass, jlong app, jlong w, jstring t)    { auto s = S(e, t); return (jlong)tm_add_checkbox(APP, W, s.c_str()); }
+JFN(void, checkBoxSetChecked)(JNIEnv*, jclass, jlong app, jlong w, jboolean c) { tm_checkbox_set_checked(APP, W, c ? 1 : 0); }
+JFN(jboolean, checkBoxIsChecked)(JNIEnv*, jclass, jlong app, jlong w)        { return tm_checkbox_is_checked(APP, W) ? JNI_TRUE : JNI_FALSE; }
+JFN(void, onToggled)(JNIEnv* e, jclass, jlong app, jlong w, jobject cb)      { tm_on_toggled(APP, W, slotTramp, mkRef(e, cb)); }
+
+JFN(jlong, addOptionGroup)(JNIEnv*, jclass, jlong app, jlong w, jint mode)   { return (jlong)tm_add_optiongroup(APP, W, mode); }
+JFN(void, optionGroupSetOptions)(JNIEnv* e, jclass, jlong app, jlong w, jstring t) { auto s = S(e, t); tm_optiongroup_set_options(APP, W, s.c_str()); }
+JFN(void, optionGroupSetOrientation)(JNIEnv*, jclass, jlong app, jlong w, jint ax) { tm_optiongroup_set_orientation(APP, W, (TmAxis)ax); }
+JFN(void, optionGroupSetSelectedIndex)(JNIEnv*, jclass, jlong app, jlong w, jint i) { tm_optiongroup_set_selected_index(APP, W, i); }
+JFN(jint, optionGroupSelectedIndex)(JNIEnv*, jclass, jlong app, jlong w)     { return tm_optiongroup_selected_index(APP, W); }
+JFN(void, optionGroupSetSelected)(JNIEnv*, jclass, jlong app, jlong w, jint i, jboolean on) { tm_optiongroup_set_selected(APP, W, i, on ? 1 : 0); }
+JFN(jboolean, optionGroupIsSelected)(JNIEnv*, jclass, jlong app, jlong w, jint i) { return tm_optiongroup_is_selected(APP, W, i) ? JNI_TRUE : JNI_FALSE; }
+JFN(void, onOptionChanged)(JNIEnv* e, jclass, jlong app, jlong w, jobject cb) { tm_on_option_changed(APP, W, slotTramp, mkRef(e, cb)); }
+
+JFN(jlong, addComboBox)(JNIEnv*, jclass, jlong app, jlong w)                 { return (jlong)tm_add_combobox(APP, W); }
+JFN(void, comboBoxSetOptions)(JNIEnv* e, jclass, jlong app, jlong w, jstring t) { auto s = S(e, t); tm_combobox_set_options(APP, W, s.c_str()); }
+JFN(void, comboBoxSetSelectedIndex)(JNIEnv*, jclass, jlong app, jlong w, jint i) { tm_combobox_set_selected_index(APP, W, i); }
+JFN(jint, comboBoxSelectedIndex)(JNIEnv*, jclass, jlong app, jlong w)        { return tm_combobox_selected_index(APP, W); }
+JFN(jstring, comboBoxSelectedText)(JNIEnv* e, jclass, jlong app, jlong w)    { char b[1024]; tm_combobox_selected_text(APP, W, b, sizeof b); return e->NewStringUTF(b); }
+JFN(void, comboBoxSetPlaceholder)(JNIEnv* e, jclass, jlong app, jlong w, jstring t) { auto s = S(e, t); tm_combobox_set_placeholder(APP, W, s.c_str()); }
+JFN(void, onComboChanged)(JNIEnv* e, jclass, jlong app, jlong w, jobject cb) { tm_on_combo_changed(APP, W, slotTramp, mkRef(e, cb)); }
+
+JFN(jlong, addProgressBar)(JNIEnv*, jclass, jlong app, jlong w)             { return (jlong)tm_add_progressbar(APP, W); }
+JFN(void, progressBarSetValue)(JNIEnv*, jclass, jlong app, jlong w, jint v) { tm_progressbar_set_value(APP, W, v); }
+JFN(jint, progressBarValue)(JNIEnv*, jclass, jlong app, jlong w)            { return tm_progressbar_value(APP, W); }
+
+JFN(jlong, addTextArea)(JNIEnv*, jclass, jlong app, jlong w)                { return (jlong)tm_add_textarea(APP, W); }
+JFN(void, textAreaSetText)(JNIEnv* e, jclass, jlong app, jlong w, jstring t) { auto s = S(e, t); tm_textarea_set_text(APP, W, s.c_str()); }
+JFN(jstring, textAreaText)(JNIEnv* e, jclass, jlong app, jlong w)           { char b[8192]; tm_textarea_text(APP, W, b, sizeof b); return e->NewStringUTF(b); }
+JFN(void, textAreaAppendLine)(JNIEnv* e, jclass, jlong app, jlong w, jstring t) { auto s = S(e, t); tm_textarea_append_line(APP, W, s.c_str()); }
+JFN(void, textAreaSetReadOnly)(JNIEnv*, jclass, jlong app, jlong w, jboolean r) { tm_textarea_set_readonly(APP, W, r ? 1 : 0); }
+JFN(void, textAreaSetWordWrap)(JNIEnv*, jclass, jlong app, jlong w, jboolean wr) { tm_textarea_set_wordwrap(APP, W, wr ? 1 : 0); }
+JFN(void, textAreaSetPlaceholder)(JNIEnv* e, jclass, jlong app, jlong w, jstring t) { auto s = S(e, t); tm_textarea_set_placeholder(APP, W, s.c_str()); }
+JFN(void, onTextAreaChanged)(JNIEnv* e, jclass, jlong app, jlong w, jobject cb) { tm_on_textarea_changed(APP, W, slotTramp, mkRef(e, cb)); }
+
+JFN(jlong, addFrame)(JNIEnv* e, jclass, jlong app, jlong w, jstring t)      { auto s = S(e, t); return (jlong)tm_add_frame(APP, W, s.c_str()); }
+JFN(void, frameSetTitle)(JNIEnv* e, jclass, jlong app, jlong w, jstring t)  { auto s = S(e, t); tm_frame_set_title(APP, W, s.c_str()); }
+JFN(jlong, addScrollView)(JNIEnv*, jclass, jlong app, jlong w)              { return (jlong)tm_add_scrollview(APP, W); }
+JFN(void, scrollViewScrollTo)(JNIEnv*, jclass, jlong app, jlong w, jint x, jint y) { tm_scrollview_scroll_to(APP, W, x, y); }
+
 } // extern "C"
