@@ -18,7 +18,7 @@ endif()
 # Remote source (used when no local override): pinned tag, overridable URL/tag
 # so CI or a mirror can redirect without editing this file.
 set(TERMACS_CORE_GIT "https://github.com/nidwe72/termacs-core.git" CACHE STRING "termacs-core git URL")
-set(TERMACS_CORE_TAG "v0.2.0" CACHE STRING "termacs-core git tag")
+set(TERMACS_CORE_TAG "v0.3.0" CACHE STRING "termacs-core git tag")
 if(TERMACS_CORE_DIR)
     message(STATUS "termacs-java: building against local termacs-core at ${TERMACS_CORE_DIR}")
     FetchContent_Declare(termacs_core SOURCE_DIR "${TERMACS_CORE_DIR}")
