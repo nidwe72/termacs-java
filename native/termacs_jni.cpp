@@ -54,6 +54,7 @@ JFN(jlong, appNewHeadless)(JNIEnv*, jclass, jint w, jint h) { return (jlong)tm_a
 JFN(jlong, appNewTerminal)(JNIEnv*, jclass)       { return (jlong)tm_app_new_terminal(); }
 JFN(void, appFree)(JNIEnv*, jclass, jlong app)    { tm_app_free(APP); }
 JFN(void, appSetTheme)(JNIEnv*, jclass, jlong app, jint t) { tm_app_set_theme(APP, (TmTheme)t); }
+JFN(void, appSetControlStyle)(JNIEnv*, jclass, jlong app, jint s) { tm_app_set_control_style(APP, (TmControlStyle)s); }
 JFN(jint, appRun)(JNIEnv*, jclass, jlong app)     { return tm_app_run(APP); }
 JFN(void, appQuit)(JNIEnv*, jclass, jlong app, jint c) { tm_app_quit(APP, c); }
 JFN(void, appPost)(JNIEnv* e, jclass, jlong app, jobject cb) { tm_app_post(APP, thunkTramp, mkRef(e, cb)); }
@@ -84,6 +85,7 @@ JFN(jlong, addVBox)(JNIEnv*, jclass, jlong app, jlong w)     { return (jlong)tm_
 
 JFN(void, widgetSetSizing)(JNIEnv*, jclass, jlong app, jlong w, jint ax, jint mn, jint pf, jint mx, jint st) { tm_widget_set_sizing(APP, W, (TmAxis)ax, mn, pf, mx, st); }
 JFN(void, widgetSetFocus)(JNIEnv*, jclass, jlong app, jlong w) { tm_widget_set_focus(APP, W); }
+JFN(void, widgetSetControlStyle)(JNIEnv*, jclass, jlong app, jlong w, jint s) { tm_widget_set_control_style(APP, W, (TmControlStyle)s); }
 JFN(void, widgetRemove)(JNIEnv*, jclass, jlong app, jlong w)   { tm_widget_remove(APP, W); }
 
 JFN(void, labelSetText)(JNIEnv* e, jclass, jlong app, jlong w, jstring t)    { auto s = S(e, t); tm_label_set_text(APP, W, s.c_str()); }

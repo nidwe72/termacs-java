@@ -16,7 +16,7 @@ final class Native {
         if (explicit != null) System.load(explicit);
         else System.loadLibrary("termacsjni");
         int v = abiVersion();
-        if (v != 3) throw new IllegalStateException("termacs ABI mismatch: native=" + v + " expected=3");
+        if (v != 4) throw new IllegalStateException("termacs ABI mismatch: native=" + v + " expected=4");
     }
 
     // ABI
@@ -29,6 +29,7 @@ final class Native {
     static native long appNewTerminal();
     static native void appFree(long app);
     static native void appSetTheme(long app, int theme);
+    static native void appSetControlStyle(long app, int style);
     static native int  appRun(long app);
     static native void appQuit(long app, int code);
     static native void appPost(long app, Cb fn);
@@ -62,6 +63,7 @@ final class Native {
     // common
     static native void widgetSetSizing(long app, long w, int axis, int min, int pref, int max, int stretch);
     static native void widgetSetFocus(long app, long w);
+    static native void widgetSetControlStyle(long app, long w, int style);
     static native void widgetRemove(long app, long w);
 
     // leaves

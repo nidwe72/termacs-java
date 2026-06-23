@@ -27,6 +27,8 @@ public final class Application implements AutoCloseable {
     long ptr() { return ptr; }
 
     public void   setTheme(Theme t)        { Native.appSetTheme(ptr, t.ordinal()); }
+    /** App-wide default actuator style (§5.12). Per-widget overrides via {@link Widget#setControlStyle}. */
+    public void   setControlStyle(ControlStyle s) { Native.appSetControlStyle(ptr, s.ordinal()); }
     public Window createWindow(String t)   { return new Window(ptr, Native.createWindow(ptr, t)); }
     public int    run()                    { return Native.appRun(ptr); }
     public void   quit(int code)           { Native.appQuit(ptr, code); }

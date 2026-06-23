@@ -85,6 +85,13 @@ public class HeadlessTest {
         app.feed(Key.ENTER);   // Yes
         check(confirmed[0], "confirm callback got yes");
 
+        // §5.12 — PhosphorHarmony theme + control styles across the JNI→C ABI→core path
+        app.setTheme(Theme.PHOSPHOR_HARMONY);
+        app.setControlStyle(ControlStyle.FRAMED);
+        input.setControlStyle(ControlStyle.BRACKETS);   // per-widget override
+        app.render();
+        check(rowHas(app, "╭"), "framed Add renders a rounded box under PhosphorHarmony");
+
         app.close();
         System.out.println("Java headless test OK");
     }
